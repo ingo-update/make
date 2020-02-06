@@ -24,7 +24,7 @@ OBJFILES = $(sort $(patsubst $(SRC)/%.c,$(OBJDIR)/%.o,$(wildcard $(SRC)/*.c)) $(
 
 ### Generic build commands for use in rules
 
-COMPILE_CMD = $(CC) -I$(SRC) -I$(GENSRC) $(CFLAGS) $(OPT_CFLAGS) $(DBG_CFLAGS) $(CFLAGS_$(notdir $<)) $< -o $@
+COMPILE_CMD = $(CC) -I$(SRC) -I$(GENSRC) $(CFLAGS) $(OPT_CFLAGS) $(DBG_CFLAGS) $(CFLAGS_$(notdir $@)) $< -o $@
 LINK_CMD = $(LD) -o $@ $(LDFLAGS) $^ $(LDLIBS)
 LEX_CMD = $(LEX) -t $< > $@
 YACC_CMD = $(YACC) -d -o $(PARSER) $<
