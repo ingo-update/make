@@ -30,10 +30,10 @@ $(UNIT_TEST_RESULTS): $(UNIT_TESTS)
 	@$(ECHO) Running $(basename $(notdir $@))
 	@$(RM) $(basename $@).failed
 	@$(basename $@) > $@ 2> $(basename $@).testlog || $(ECHO) true > $(basename $@).failed
-	@[ ! -e $(basename $@).failed ] || $(CAT) @$(basename $@).testlog
-	@[ ! -e $(basename $@).failed ]
+	@[ ! -e $(basename $@).failed ] || $(CAT) $(basename $@).testlog
 
 $(TESTDIR)/unit_test_results: $(UNIT_TEST_RESULTS)
 	@$(CAT) > $@ $^
+	@[ ! -e $(TESTDIR)/*.failed ]
 
 test: $(TESTDIR)/unit_test_results
