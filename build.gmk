@@ -19,7 +19,7 @@ OBJDIR = $(BUILDDIR)/objs
 
 ### File lists
 
-SRCFILES = $(TOPDIR)/Makefile $(wildcard $(TOPDIR)/make/*.gmk $(SRC)/*.h $(SRC)/*.c)
+SRCFILES = $(TOPDIR)/Makefile $(wildcard $(SRC)/*.h $(SRC)/*.c)
 OBJFILES = $(sort $(patsubst $(SRC)/%.c,$(OBJDIR)/%.o,$(wildcard $(SRC)/*.c)) $(EXTRA_OBJS))
 
 ### Generic build commands for use in rules
