@@ -1,3 +1,6 @@
+## Miscellaneous output files
+PRINTFILE = paper.ps
+
 ## Common tools to be used
 CC = gcc -c
 LD = gcc
@@ -5,7 +8,7 @@ RM = rm -rf
 ECHO = echo
 MKDIR = mkdir -p
 CP = cp
-PRINT = a2ps -Afill -Eplain -o paper.ps
+PRINT = a2ps -Afill -Eplain -o $(PRINTFILE)
 DIFF = diff
 RUBY = ruby
 LEX = flex

@@ -84,11 +84,11 @@ $(addprefix $(BUILDDIR)/,$(TARGET)):
 
 # Remove all build artifacts
 clean:
-	@$(RM) $(BUILDDIR) $(TARGET)
+	@$(RM) $(BUILDDIR) $(TARGET) $(PRINTFILE)
 
 # Also remove editor backup files
 sweep: clean
-	@$(RM) *~ $(SRC)/*~ $(TOPDIR)/test/*~ $(TOPDIR)/make/*~ $(TOPDIR)/examples/*~ $(TOPDIR)/paper.ps
+	@$(RM) *~ $(SRC)/*~ $(TOPDIR)/test/*~ $(TOPDIR)/make/*~ $(TOPDIR)/examples/*~
 
 # Print source
 paper: $(SRCFILES)
