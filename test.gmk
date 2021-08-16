@@ -1,8 +1,12 @@
 TESTDIR = $(BUILDDIR)/test
 
+### File lists
+
 TESTOBJS += $(sort $(patsubst $(TOPDIR)/test/%.c,$(TESTDIR)/%.o,$(wildcard $(TOPDIR)/test/*.c)))
 UNIT_TESTS = $(sort $(patsubst $(TOPDIR)/test/%.c,$(TESTDIR)/%,$(wildcard $(TOPDIR)/test/test-*.c)))
 UNIT_TEST_RESULTS = $(addsuffix .testresult, $(UNIT_TESTS))
+
+### Build commands applying test flags
 
 TEST_COMPILE_CMD = $(CC) -I$(SRC) -I$(GENSRC) $(TEST_CFLAGS) $(TEST_CFLAGS_$(notdir $@)) $< -o $@
 TEST_LINK_CMD = $(LD) -o $@ $(TEST_LDFLAGS) $(LDFLAGS_$(notdir $@)) $^ $(TEST_LDLIBS) $(LDLIBS_$(notdir $@))
@@ -17,7 +21,7 @@ $(TESTOBJS):
 	@$(CAT) 2> /dev/null $@.log || true
 	@[ ! -e $@.log ]
 
-# Link and run unit tests.
+# Link unit test.
 $(UNIT_TESTS):
 	@$(ECHO) Linking $(notdir $@)
 	@$(ECHO) '$(TEST_LINK_CMD)' > $@.cmdline
@@ -26,14 +30,17 @@ $(UNIT_TESTS):
 	@$(CAT) 2> /dev/null $@.log || true
 	@[ ! -e $@.log ]
 
+# Run unit test and save results.
 $(UNIT_TEST_RESULTS): $(UNIT_TESTS)
 	@$(ECHO) Running $(basename $(notdir $@))
 	@$(RM) $(basename $@).failed
 	@$(basename $@) > $@ 2> $(basename $@).testlog || $(ECHO) true > $(basename $@).failed
 	@[ ! -e $(basename $@).failed ] || $(CAT) $(basename $@).testlog
 
+# Run all unit tests and gather results.
 $(TESTDIR)/unit_test_results: $(UNIT_TEST_RESULTS)
 	@$(CAT) > $@ $^
 	@[ ! -e $(TESTDIR)/*.failed ]
 
+# Main test target.
 test: $(TESTDIR)/unit_test_results
