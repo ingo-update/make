@@ -16,6 +16,9 @@ BUILDDIR = $(TOPDIR)/build
 TOOLSDIR = $(BUILDDIR)/tools
 GENSRC = $(BUILDDIR)/gensrc
 OBJDIR = $(BUILDDIR)/objs
+IMAGEDIR = $(BUILDDIR)/images
+PROJECT_IMAGEDIR = $(IMAGEDIR)/$(PROJECT)-$(TARGET_OS)-$(TARGET_ARCH)
+TEST_IMAGEDIR = $(IMAGEDIR)/test-$(PROJECT)-$(TARGET_OS)-$(TARGET_ARCH)
 
 ### File lists
 
@@ -93,3 +96,12 @@ sweep: clean
 # Print source
 paper: $(SRCFILES)
 	@$(PRINT) $(sort $^)
+
+project-image: $(TARGET)
+	@$(MKDIR) $(PROJECT_IMAGEDIR)/bin
+	@$(CP) $^ $(PROJECT_IMAGEDIR)/bin
+
+test-image:
+	@$(MKDIR) $(TEST_IMAGEDIR)
+
+images: project-image test-image

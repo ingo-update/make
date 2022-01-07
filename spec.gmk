@@ -1,3 +1,14 @@
+## Build platform
+
+BUILD_OS = $(shell uname)
+BUILD_ARCH = $(shell uname -m)
+
+## Target platform
+# TODO: Cross build not implemented yet.
+
+TARGET_OS = $(BUILD_OS)
+TARGET_ARCH = $(BUILD_ARCH)
+
 ## Miscellaneous output files
 PRINTFILE = paper.ps
 
