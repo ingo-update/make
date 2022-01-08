@@ -38,9 +38,15 @@ $(UNIT_TEST_RESULTS): $(UNIT_TESTS)
 	@[ ! -e $(basename $@).failed ] || $(CAT) $(basename $@).testlog
 
 # Run all unit tests and gather results.
-$(TESTDIR)/unit_test_results: $(UNIT_TEST_RESULTS)
+$(TESTDIR)/unit.test.results: $(UNIT_TEST_RESULTS)
 	@$(CAT) > $@ $^
 	@[ ! -e $(TESTDIR)/*.failed ]
 
 # Main test target.
-test: $(TESTDIR)/unit_test_results
+test: $(TESTDIR)/unit.test.results
+
+test-image: $(UNIT_TESTS)
+	@$(MKDIR) $(TEST_IMAGEDIR)
+	@$(CP) $^ $(TEST_IMAGEDIR)
+
+images: test-image
