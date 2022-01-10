@@ -1,25 +1,5 @@
 ### Generic Makefile for C projects ###
 
-ifdef SPEC
-  include $(SPEC)
-else
-  include make/spec.gmk
-endif
-
-### Directories
-
-TOPDIR = $(shell pwd)
-SRC = $(TOPDIR)/src
-
-# All build artifacts and temporaries go into $(BUILDDIR)
-BUILDDIR = $(TOPDIR)/build
-TOOLSDIR = $(BUILDDIR)/tools
-GENSRC = $(BUILDDIR)/gensrc
-OBJDIR = $(BUILDDIR)/objs
-IMAGEDIR = $(BUILDDIR)/images
-PROJECT_IMAGEDIR = $(IMAGEDIR)/$(PROJECT)-$(TARGET_OS)-$(TARGET_ARCH)
-TEST_IMAGEDIR = $(IMAGEDIR)/test-$(PROJECT)-$(TARGET_OS)-$(TARGET_ARCH)
-
 ### File lists
 
 SRCFILES = $(TOPDIR)/Makefile $(wildcard $(SRC)/*.h $(SRC)/*.c)
@@ -33,12 +13,6 @@ LEX_CMD = $(LEX) -t $< > $@
 YACC_CMD = $(YACC) -d -o $(PARSER) $<
 
 PARSER_H = $(patsubst %.c,%.h,$(PARSER))
-
-### Targets
-
-## Default target(s)
-
-default: $(TARGET)
 
 $(TARGET): $(addprefix $(BUILDDIR)/,$(TARGET))
 	@$(CP) $^ $(TOPDIR)
@@ -82,23 +56,3 @@ $(addprefix $(BUILDDIR)/,$(TARGET)):
 	@[ -s $@.log ] || $(RM) $@.log
 	@$(CAT) 2> /dev/null $@.log || true
 	@[ ! -e $@.log ]
-
-## Housekeeping
-
-# Remove all build artifacts
-clean:
-	@$(RM) $(BUILDDIR) $(TARGET) $(PRINTFILE)
-
-# Also remove editor backup files
-sweep: clean
-	@$(RM) *~ $(SRC)/*~ $(TOPDIR)/test/*~ $(TOPDIR)/make/*~ $(TOPDIR)/examples/*~
-
-# Print source
-paper: $(SRCFILES)
-	@$(PRINT) $(sort $^)
-
-project-image: $(TARGET)
-	@$(MKDIR) $(PROJECT_IMAGEDIR)/bin
-	@$(CP) $^ $(PROJECT_IMAGEDIR)/bin
-
-images: project-image

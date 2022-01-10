@@ -1,0 +1,56 @@
+### Directories
+
+TOPDIR = $(shell pwd)
+SRC = $(TOPDIR)/src
+
+# All build artifacts and temporaries go into $(BUILDDIR)
+BUILDDIR = $(TOPDIR)/build
+TOOLSDIR = $(BUILDDIR)/tools
+GENSRC = $(BUILDDIR)/gensrc
+OBJDIR = $(BUILDDIR)/objs
+IMAGEDIR = $(BUILDDIR)/images
+PROJECT_IMAGEDIR = $(IMAGEDIR)/$(PROJECT)-$(TARGET_OS)-$(TARGET_ARCH)
+TEST_IMAGEDIR = $(IMAGEDIR)/test-$(PROJECT)-$(TARGET_OS)-$(TARGET_ARCH)
+
+### File lists
+
+SRCFILES = $(TOPDIR)/Makefile $(wildcard $(SRC)/*.h $(SRC)/*.c)
+OBJFILES = $(sort $(patsubst $(SRC)/%.c,$(OBJDIR)/%.o,$(wildcard $(SRC)/*.c)) $(EXTRA_OBJS))
+
+
+
+
+
+ifndef SPEC
+  SPEC = $(MAKEDIR)/spec.gmk
+endif
+
+include $(SPEC)
+include $(MAKEDIR)/build.gmk
+include $(MAKEDIR)/test.gmk
+
+### Targets
+
+## Default target(s)
+
+default: $(TARGET)
+
+## Housekeeping
+
+# Remove all build artifacts
+clean:
+	@$(RM) $(BUILDDIR) $(TARGET) $(PRINTFILE)
+
+# Also remove editor backup files
+sweep: clean
+	@$(RM) *~ $(SRC)/*~ $(TOPDIR)/test/*~ $(TOPDIR)/make/*~ $(TOPDIR)/examples/*~
+
+# Print source
+paper: $(SRCFILES)
+	@$(PRINT) $(sort $^)
+
+project-image: $(TARGET)
+	@$(MKDIR) $(PROJECT_IMAGEDIR)/bin
+	@$(CP) $^ $(PROJECT_IMAGEDIR)/bin
+
+images: project-image
