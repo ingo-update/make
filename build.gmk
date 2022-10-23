@@ -17,24 +17,6 @@ PARSER_H = $(patsubst %.c,%.h,$(PARSER))
 $(TARGET): $(addprefix $(BUILDDIR)/,$(TARGET))
 	@$(CP) $^ $(TOPDIR)
 
-## Generated source
-
-# A tokeniser built with $(LEX)
-$(LEXER):
-	@$(MKDIR) $(dir $@)
-	@$(ECHO) Generating $(notdir $@)
-	@$(ECHO) '$(LEX_CMD)' > $@.cmdline
-	@$(LEX_CMD) 2> $@.log
-	@[ -s $@.log ] || $(RM) $@.log
-
-# A syntax analyser built with $(YACC)
-$(PARSER) $(PARSER_H):
-	@$(MKDIR) $(dir $@)
-	@$(ECHO) Generating $(notdir $(PARSER)), $(notdir $(PARSER_H))
-	@$(ECHO) '$(YACC_CMD)' > $@.cmdline
-	@$(YACC_CMD) 2> $@.log
-	@[ -s $@.log ] || $(RM) $@.log
-
 ## Compilation and linking
 
 # Compile C source into object files
@@ -56,3 +38,21 @@ $(addprefix $(BUILDDIR)/,$(TARGET)):
 	@[ -s $@.log ] || $(RM) $@.log
 	@$(CAT) 2> /dev/null $@.log || true
 	@[ ! -e $@.log ]
+
+## Generated source
+
+# A tokeniser built with $(LEX)
+$(LEXER):
+	@$(MKDIR) $(dir $@)
+	@$(ECHO) Generating $(notdir $@)
+	@$(ECHO) '$(LEX_CMD)' > $@.cmdline
+	@$(LEX_CMD) 2> $@.log
+	@[ -s $@.log ] || $(RM) $@.log
+
+# A syntax analyser built with $(YACC)
+$(PARSER) $(PARSER_H):
+	@$(MKDIR) $(dir $@)
+	@$(ECHO) Generating $(notdir $(PARSER)), $(notdir $(PARSER_H))
+	@$(ECHO) '$(YACC_CMD)' > $@.cmdline
+	@$(YACC_CMD) 2> $@.log
+	@[ -s $@.log ] || $(RM) $@.log

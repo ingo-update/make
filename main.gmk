@@ -17,10 +17,6 @@ TEST_IMAGEDIR = $(IMAGEDIR)/test-$(PROJECT)-$(TARGET_OS)-$(TARGET_ARCH)
 SRCFILES = $(TOPDIR)/Makefile $(wildcard $(SRC)/*.h $(SRC)/*.c)
 OBJFILES = $(sort $(patsubst $(SRC)/%.c,$(OBJDIR)/%.o,$(wildcard $(SRC)/*.c)) $(EXTRA_OBJS))
 
-
-
-
-
 ifndef SPEC
   SPEC = $(MAKEDIR)/spec.gmk
 endif
@@ -37,9 +33,9 @@ default: $(TARGET)
 
 ## Housekeeping
 
-# Remove all build artifacts
+# Remove all build and test artifacts
 clean:
-	@$(RM) $(BUILDDIR) $(TARGET) $(PRINTFILE)
+	@$(RM) $(BUILDDIR) $(TARGET) $(PRINTFILE) $(CLEANFILES)
 
 # Also remove editor backup files
 sweep: clean
