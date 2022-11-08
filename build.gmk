@@ -46,13 +46,14 @@ $(LEXER):
 	@$(MKDIR) $(dir $@)
 	@$(ECHO) Generating $(notdir $@)
 	@$(ECHO) '$(LEX_CMD)' > $@.cmdline
-	@$(LEX_CMD) 2> $@.log
-	@[ -s $@.log ] || $(RM) $@.log
+	@$(LEX_CMD)
 
 # A syntax analyser built with $(YACC)
 $(PARSER) $(PARSER_H):
 	@$(MKDIR) $(dir $@)
 	@$(ECHO) Generating $(notdir $(PARSER)), $(notdir $(PARSER_H))
 	@$(ECHO) '$(YACC_CMD)' > $@.cmdline
-	@$(YACC_CMD) 2> $@.log
+	@$(YACC_CMD) 2> $@.log || true
 	@[ -s $@.log ] || $(RM) $@.log
+	@$(CAT) 2> /dev/null $@.log || true
+	@[ ! -e $@.log ]
