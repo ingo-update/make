@@ -1,9 +1,8 @@
 TESTDIR = $(BUILDDIR)/test
-
 ### File lists
 
-TESTOBJS += $(sort $(patsubst $(TOPDIR)/test/%.c,$(TESTDIR)/%.o,$(wildcard $(TOPDIR)/test/*.c)))
-UNIT_TESTS = $(sort $(patsubst $(TOPDIR)/test/%.c,$(TESTDIR)/%,$(wildcard $(TOPDIR)/test/test-*.c)))
+TESTOBJS += $(sort $(patsubst $(TEST)/%.c,$(TESTDIR)/%.o,$(wildcard $(TEST)/*.c)))
+UNIT_TESTS = $(sort $(patsubst $(TEST)/%.c,$(TESTDIR)/%,$(wildcard $(TEST)/test-*.c)))
 UNIT_TEST_RESULTS = $(addsuffix .testresult, $(UNIT_TESTS))
 
 ### Build commands applying test flags

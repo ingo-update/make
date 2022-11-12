@@ -1,7 +1,10 @@
+### Generic Makefile for C projects ###
+
 ### Directories
 
 TOPDIR = $(shell pwd)
 SRC = $(TOPDIR)/src
+TEST = $(TOPDIR)/test
 
 # All build artifacts and temporaries go into $(BUILDDIR)
 BUILDDIR = $(TOPDIR)/build
@@ -39,7 +42,7 @@ clean:
 
 # Also remove editor backup files
 sweep: clean
-	@$(RM) *~ $(SRC)/*~ $(TOPDIR)/test/*~ $(TOPDIR)/make/*~ $(TOPDIR)/examples/*~
+	@$(RM) $(TOPDIR)/*~ $(TOPDIR)/*/*~
 
 # Print source
 paper: $(SRCFILES)

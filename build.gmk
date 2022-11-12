@@ -1,11 +1,4 @@
-### Generic Makefile for C projects ###
-
-### File lists
-
-SRCFILES = $(TOPDIR)/Makefile $(wildcard $(SRC)/*.h $(SRC)/*.c)
-OBJFILES = $(sort $(patsubst $(SRC)/%.c,$(OBJDIR)/%.o,$(wildcard $(SRC)/*.c)) $(EXTRA_OBJS))
-
-### Generic build commands for use in rules
+### Build commands for use in recipes
 
 COMPILE_CMD = $(CC) -I$(SRC) -I$(GENSRC) $(CFLAGS) $(OPT_CFLAGS) $(DBG_CFLAGS) $(CFLAGS_$(notdir $@)) $< -o $@
 LINK_CMD = $(LD) -o $@ $(LDFLAGS) $^ $(LDLIBS) $(LDLIBS_$(notdir $@))
@@ -24,7 +17,7 @@ $(OBJFILES):
 	@$(MKDIR) $(dir $@)
 	@$(ECHO) Compiling $(notdir $<)
 	@$(ECHO) '$(COMPILE_CMD)' > $@.cmdline
-	@-$(COMPILE_CMD) 2> $@.log || true
+	@$(COMPILE_CMD) 2> $@.log || true
 	@[ -s $@.log ] || $(RM) $@.log
 	@$(CAT) 2> /dev/null $@.log || true
 	@[ ! -e $@.log ]
